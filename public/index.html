@@ -8,29 +8,7 @@
 </head>
 
 <body>
-    <div class="flares">
-        <img src="images/flare-top.png" loading="lazy" sizes="(max-width: 1920px) 100vw, 1920px"
-            srcset="flare-top-500.png 500w, images/flare-top-800.png 800w, images/flare-top-1080.png 1080w, images/flare-top.png 1920w"
-            alt="" class="flares-top">
-        <img src="images/flare-right.png" loading="lazy" sizes="(max-width: 1622px) 100vw, 1622px"
-            srcset="images/flare-right-500.png 500w, images/flare-right-800.png 800w, images/flare-right-1080.png 1080w, images/flare-right.png 1622w"
-            alt="" class="new-flare-nav top-right hide-mobile">
-        <img src="images/flare-left.png" loading="lazy" sizes="(max-width: 1518px) 100vw, 1518px"
-            srcset="images/flare-left-500.png 500w, images/flare-left-800.png 800w, images/flare-left.png 1518w" alt=""
-            class="new-flare-nav top-left hide-mobile">
-    </div>
-
-    <div class="container">
-        <div class="hero">
-
-            <h1>Hello from FL0.</h1>
-            <p>Congratulations, you've deployed a Node.js web server with FL0!</p>
-        </div>
-        <div class="logo">
-            <img src="images/logo.svg" loading="lazy" alt="">
-
-        </div>
-    </div>
+    <h1>Extracted JSON</h1>
     <script type="text/javascript">
         document.addEventListener('click', function (event) {
             const x = event.clientX / window.innerWidth;
@@ -42,4 +20,70 @@
         confetti();
     </script>
 
+    <script type="text/javascript">
+        // Obtener contenido de la página local
+        fetch('public/datosviejos.html')
+            .then(response => response.text())
+            .then(html => {
+                // Crear un elemento div y establecer el HTML al contenido fetchado
+                const div = document.createElement('div');
+                div.innerHTML = html;
+                return div; // Retornar div para encadenar la siguiente promesa
+            })
+            .then(div => {
+                // Obtener la tabla del cuerpo (tbody)
+                const table = div.querySelector('body > table');
+
+                // Verificar si la tabla existe
+                if (table) {
+                    // Extraer filas de tbody
+                    const rows = table.querySelectorAll('tbody > tr');
+
+                    // Inicializar un array para almacenar los datos extraídos
+                    const extractedData = [];
+
+                    // Recorrer las filas
+                    for (const row of rows) {
+                        // Inicializar un objeto para la fila extraída
+                        const extractedRow = {};
+
+                        // Obtener celdas
+                        const cells = row.querySelectorAll('td');
+
+                        // Recorrer las celdas
+                        for (let i = 0; i < cells.length; i++) {
+                            // Obtener el valor de la celda
+                            const value = cells[i].innerText;
+
+                            // Agregar datos al objeto en función del índice de la celda
+                            if (i === 0) extractedRow.Posicion = value;
+                            if (i === 1) extractedRow.Vacaciones = value;
+                            if (i === 2) extractedRow.Nombre = value;
+                            if (i === 3) extractedRow.PuntosEntrenamientos = value;
+                            if (i === 4) extractedRow.PuntosEdificio = value;
+                            if (i === 5) extractedRow.PuntosTropa = value;
+                            if (i === 6) extractedRow.Suma = value;
+                            if (i === 7) extractedRow.Edificios = value;
+                            if (i === 8) extractedRow.IDPlayer = value;
+                        }
+
+                        // Agregar el objeto de fila extraída al array
+                        extractedData.push(extractedRow);
+                    }
+
+                    // Convertir el array a una cadena JSON
+                    const json = JSON.stringify(extractedData);
+
+                    // Mostrar JSON
+                    document.body.innerHTML += '<pre>' + json + '</pre>';
+                } else {
+                    console.error('No se encontró una tabla en el documento HTML.');
+                }
+            })
+            .catch(error => {
+                console.error('Error al cargar el archivo local:', error);
+            });
+    </script>
 </body>
+</html>
+   

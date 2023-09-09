@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+<html>
 <head>
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <link rel="icon" href="/favicon.png">
@@ -9,81 +9,6 @@
 
 <body>
     <h1>Extracted JSON</h1>
-    <script type="text/javascript">
-        document.addEventListener('click', function (event) {
-            const x = event.clientX / window.innerWidth;
-            const y = event.clientY / window.innerHeight;
-            confetti({
-                origin: { x, y }
-            });
-        });
-        confetti();
-    </script>
-
-    <script type="text/javascript">
-        // Obtener contenido de la página local
-        fetch('public/datosviejos.html')
-            .then(response => response.text())
-            .then(html => {
-                // Crear un elemento div y establecer el HTML al contenido fetchado
-                const div = document.createElement('div');
-                div.innerHTML = html;
-                return div; // Retornar div para encadenar la siguiente promesa
-            })
-            .then(div => {
-                // Obtener la tabla del cuerpo (tbody)
-                const table = div.querySelector('body > table');
-
-                // Verificar si la tabla existe
-                if (table) {
-                    // Extraer filas de tbody
-                    const rows = table.querySelectorAll('tbody > tr');
-
-                    // Inicializar un array para almacenar los datos extraídos
-                    const extractedData = [];
-
-                    // Recorrer las filas
-                    for (const row of rows) {
-                        // Inicializar un objeto para la fila extraída
-                        const extractedRow = {};
-
-                        // Obtener celdas
-                        const cells = row.querySelectorAll('td');
-
-                        // Recorrer las celdas
-                        for (let i = 0; i < cells.length; i++) {
-                            // Obtener el valor de la celda
-                            const value = cells[i].innerText;
-
-                            // Agregar datos al objeto en función del índice de la celda
-                            if (i === 0) extractedRow.Posicion = value;
-                            if (i === 1) extractedRow.Vacaciones = value;
-                            if (i === 2) extractedRow.Nombre = value;
-                            if (i === 3) extractedRow.PuntosEntrenamientos = value;
-                            if (i === 4) extractedRow.PuntosEdificio = value;
-                            if (i === 5) extractedRow.PuntosTropa = value;
-                            if (i === 6) extractedRow.Suma = value;
-                            if (i === 7) extractedRow.Edificios = value;
-                            if (i === 8) extractedRow.IDPlayer = value;
-                        }
-
-                        // Agregar el objeto de fila extraída al array
-                        extractedData.push(extractedRow);
-                    }
-
-                    // Convertir el array a una cadena JSON
-                    const json = JSON.stringify(extractedData);
-
-                    // Mostrar JSON
-                    document.body.innerHTML += '<pre>' + json + '</pre>';
-                } else {
-                    console.error('No se encontró una tabla en el documento HTML.');
-                }
-            })
-            .catch(error => {
-                console.error('Error al cargar el archivo local:', error);
-            });
-    </script>
 </body>
 </html>
    
